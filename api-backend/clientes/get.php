@@ -2,7 +2,7 @@
 try {
 
     // Verifica se há um ID na URL para consulta específica
-    if(isset($_GET["id"]) && is_numeric($_GET["id"])) {
+    if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
         $id = $_GET["id"];
 
         // Monta a sintaxe SQL de busca
@@ -33,7 +33,6 @@ try {
         $stmt = $conn->prepare($sql);
         // Vincular o parâmetro :nome com o valor da variável $nome
         $stmt->bindValue(':nome', '%' . $nome . '%', PDO::PARAM_STR);
-
     }
     // Verifica se há uma Cidade na URL para consulta
     elseif (isset($_GET["cidade"]) && is_string($_GET["cidade"])) {
@@ -51,16 +50,14 @@ try {
         $stmt = $conn->prepare($sql);
         // Vincular o parâmetro :cidade com o valor da variável $cidade
         $stmt->bindValue(':cidade', '%' . $cidade . '%', PDO::PARAM_STR);
-
-    }
-    else {
+    } else {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
             FROM clientes
             ORDER BY nome
         ";
-        
+
         // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
     }
@@ -131,7 +128,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     }
     // SE O CLIENTE NÃO FOI ENCONTRADO, RETORNAR UM ERRO
     // $data = $found ? $data : null;
-    if(!$found) {
+    if (!$found) {
         http_response_code(204);
     }
 } elseif (isset($_GET["name"]) && is_string($_GET["name"])) {
@@ -147,7 +144,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     }
     // SE O CLIENTE NÃO FOI ENCONTRADO, RETORNAR UM ERRO
     // $data = $found ? $data : null;
-    if(!$found) {
+    if (!$found) {
         http_response_code(204);
     } else {
         $data = $result;
