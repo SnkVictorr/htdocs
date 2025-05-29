@@ -8,10 +8,10 @@ try {
     if (!empty($postfields)) {
         $id = $postfields['id'] ?? null;
         $nome = $postfields['nome'] ?? null;
-        $cpf = $postfields['cpf'] ?? null;
-        $imagem = $postfields['imagem'] ?? null;
+        $razaoSocial = $postfields['razaoSocial'] ?? null;
+        $cnpj = $postfields['cnpj'] ?? null;
         $email = $postfields['email'] ?? null;
-        $whatsapp = $postfields['whatsapp'] ?? null;
+        $telefone = $postfields['telefone'] ?? null;
         $logradouro = $postfields['endereco']['logradouro'] ?? null;
         $numero = $postfields['endereco']['numero'] ?? null;
         $complemento = $postfields['endereco']['complemento'] ?? null;
@@ -24,7 +24,7 @@ try {
         // Verifica campos obrigatórios
         if (empty($id)) {
             http_response_code(400);
-            throw new Exception('ID do cliente é obrigatório');
+            throw new Exception('ID do Fornecedor é obrigatório');
         }
         if (empty($nome) || empty($postfields['endereco'])) {
             http_response_code(400);
@@ -32,11 +32,11 @@ try {
         }
 
         $sql = "
-        UPDATE clientes SET 
+        UPDATE fornecedores SET 
             nome = :nome,
-            cpf = :cpf,
-            imagem = :imagem,
-            whatsapp = :whatsapp,
+            cnpj = :cnpj,
+            razao_social = :razao_social,
+            telefone = :telefone,
             email = :email, 
             logradouro = :logradouro, 
             numero = :numero, 
@@ -45,15 +45,15 @@ try {
             cidade = :cidade,
             estado = :estado,
             cep = :cep
-        WHERE id_cliente = :id
+        WHERE id_fornecedor = :id
         ";
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':nome', $nome, PDO::PARAM_STR);
-        $stmt->bindParam(':cpf', $cpf, PDO::PARAM_STR);
-        $stmt->bindParam(':whatsapp', $whatsapp, PDO::PARAM_STR);
-        $stmt->bindParam(':imagem', $imagem, PDO::PARAM_STR);
+        $stmt->bindParam(':razao_social', $razaoSocial, PDO::PARAM_STR);
+        $stmt->bindParam(':cnpj', $cnpj, PDO::PARAM_STR);
+        $stmt->bindParam(':telefone', $telefone, PDO::PARAM_STR);
         $stmt->bindParam(':email', $email, PDO::PARAM_STR);
         $stmt->bindParam(':logradouro', $logradouro);
         $stmt->bindParam(':numero', $numero);
@@ -67,7 +67,7 @@ try {
 
         $result = array(
             'status' => 'success',
-            'message' => 'Cliente alterado com sucesso!'
+            'message' => 'Fornecedor alterado com sucesso!'
         );
     } else {
         http_response_code(400);

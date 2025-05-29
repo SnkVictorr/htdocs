@@ -1,18 +1,24 @@
 <?php
 
+if (isset($key) && is_numeric($key)) {
+    // Se a chave for numérica, significa que é uma requisição específica
+    $url = "http://localhost:8080/fornecedores/" . $key;
+} else {
+    // Caso contrário, é uma requisição para todos os fornecedores
+    $url = "http://localhost:8080/fornecedores/";
+}
+
 // INICIAR SESSÃO GLOBAL
 $curl = curl_init();
 // CONFIGURAR O CURL
 curl_setopt_array($curl, array(
-    CURLOPT_URL => "http://localhost:8080/fornecedores/",
+    CURLOPT_URL => $url,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT => 3,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
         'Content-Type: application/json'
     ),
-    CURLOPT_POSTFIELDS => json_encode($postfields),
 ));
 // RECUPERA O RETORNO DO CURL
 $response = curl_exec($curl);
