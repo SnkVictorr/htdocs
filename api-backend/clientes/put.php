@@ -6,62 +6,45 @@ try {
 
     // Verificar se existe informações de formulário
     if (!empty($postfields)) {
-        $id = $postfields['id'] ?? null;
-        $nome = $postfields['nome'] ?? null;
-        $cpf = $postfields['cpf'] ?? null;
+        $id_produto = $postfields['id_produto'] ?? null;
+        $produto = $postfields['produto'] ?? null;
+        $descricao = $postfields['descricao'] ?? null;
+        $id_marca = $postfields['id_marca'] ?? null;
         $imagem = $postfields['imagem'] ?? null;
-        $email = $postfields['email'] ?? null;
-        $whatsapp = $postfields['whatsapp'] ?? null;
-        $logradouro = $postfields['endereco']['logradouro'] ?? null;
-        $numero = $postfields['endereco']['numero'] ?? null;
-        $complemento = $postfields['endereco']['complemento'] ?? null;
-        $bairro = $postfields['endereco']['bairro'] ?? null;
-        $cidade = $postfields['endereco']['cidade'] ?? null;
-        $estado = $postfields['endereco']['estado'] ?? null;
-        $cep = $postfields['endereco']['cep'] ?? null;
+        $quantidade = $postfields['quantidade'] ?? null;
+        $preco = $postfields['preco'] ?? null;
 
 
         // Verifica campos obrigatórios
-        if (empty($id)) {
+        if (empty($id_produto)) {
             http_response_code(400);
             throw new Exception('ID do cliente é obrigatório');
         }
-        if (empty($nome) || empty($postfields['endereco'])) {
+        if (empty($produto) || empty($postfields['id_marca'])) {
             http_response_code(400);
-            throw new Exception('Nome e Endereço são obrigatórios');
+            throw new Exception('Marca e produto são obrigatórios');
         }
 
         $sql = "
-        UPDATE clientes SET 
-            nome = :nome,
-            cpf = :cpf,
+        UPDATE produtos SET 
+            produto = :produto,
+            descricao = :descricao,
+            id_marca = :id_marca,
             imagem = :imagem,
-            whatsapp = :whatsapp,
-            email = :email, 
-            logradouro = :logradouro, 
-            numero = :numero, 
-            complemento = :complemento, 
-            bairro = :bairro, 
-            cidade = :cidade,
-            estado = :estado,
-            cep = :cep
-        WHERE id_cliente = :id
+            quantidade = :quantidade, 
+            preco = :preco, 
+        WHERE id_produto = :id_produto
         ";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':nome', $nome, PDO::PARAM_STR);
-        $stmt->bindParam(':cpf', $cpf, PDO::PARAM_STR);
-        $stmt->bindParam(':whatsapp', $whatsapp, PDO::PARAM_STR);
+        $stmt->bindParam(':id_produto', $id_produto, PDO::PARAM_INT);
+        $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);
+        $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
+        $stmt->bindParam(':id_marca', $id_marca, PDO::PARAM_STR);
         $stmt->bindParam(':imagem', $imagem, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':logradouro', $logradouro);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':complemento', $complemento, is_null($complemento) ? PDO::PARAM_NULL : PDO::PARAM_STR);
-        $stmt->bindParam(':bairro', $bairro);
-        $stmt->bindParam(':cidade', $cidade);
-        $stmt->bindParam(':estado', $estado);
-        $stmt->bindParam(':cep', $cep);
+        $stmt->bindParam(':quantidade', $quantidade, PDO::PARAM_STR);
+        $stmt->bindParam(':preco', $preco);
+
 
         $stmt->execute();
 
