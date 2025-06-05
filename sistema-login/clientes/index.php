@@ -9,6 +9,7 @@ if (isset($_GET["key"])) {
     $key = $_GET["key"];
     // SE HOUVER KEY, BUSCA O CLIENTE NO BANCO DE DADOS
     require("../requests/clientes/get.php");
+    $key = null;
     if (isset($response["data"]) && !empty($response["data"])) {
         // Se houver dados, pega o primeiro e unico cliente na posição [0]
         $client = $response["data"][0];
@@ -178,9 +179,10 @@ if (isset($_GET["key"])) {
                         <!-- Os clientes serão carregados aqui via PHP -->
                         <?php
                         // Deixa a key null para mostrar todos os clientes
-                        $key = null;
+
                         // SE HOUVER CLIENTES NA BD, EXIBIR
                         require("../requests/clientes/get.php");
+
                         if (!empty($response)) {
                             foreach ($response["data"] as $key => $client) {
                                 echo '

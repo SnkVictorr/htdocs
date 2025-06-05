@@ -15,6 +15,11 @@ if (isset($_GET["key"])) {
     // $_SESSION["clientes"] = array_values($_SESSION["clientes"]);
     // $_SESSION["msg"] = "Cliente removido com sucesso!";
 
+    require "../requests/clientes/get.php";
+    $imagem = $response["data"][0]["imagem"];
+    if (file_exists('./sistema-login/produtos/imagens/' . $imagem . '')) {
+        unlink('./sistema-login/produtos/imagens/' . $imagem . '');
+    }
     require "../requests/clientes/delete.php";
     $_SESSION["msg"] = $response["message"];
 }

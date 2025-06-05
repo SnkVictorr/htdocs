@@ -9,6 +9,8 @@ if (isset($_GET["key"])) {
     $key = $_GET["key"];
     // SE HOUVER KEY, BUSCA O CLIENTE NO BANCO DE DADOS
     require("../requests/produtos/get.php");
+    // 
+    $key = null;
     if (isset($response["data"]) && !empty($response["data"])) {
         // Se houver dados, pega o primeiro e unico cliente na posição [0]
         $produto = $response["data"][0];
@@ -47,8 +49,8 @@ if (isset($_GET["key"])) {
                 </h2>
                 <form id="produtoForm" action="/produtos/cadastrar.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="id_produto" class="form-label">Código do produto</label>
-                        <input type="text" class="form-control" id="id_produto" name="id_produto" readonly value="<?php echo isset($produto) ? $produto['id_produto'] : ""; ?>">
+                        <label for="productId" class="form-label">Código do produto</label>
+                        <input type="text" class="form-control" id="productId" name="productId" readonly value="<?php echo isset($produto) ? $produto['id_produto'] : ""; ?>">
                     </div>
                     <div class="mb-3">
                         <label for="produto" class="form-label">Nome do Produto</label>
@@ -63,12 +65,14 @@ if (isset($_GET["key"])) {
                         <select class="form-select" id="id_marca" name="id_marca" required>
                             <option value="" disabled selected>Selecione uma Marca...</option>
                             <?php
+
                             require("../requests/marcas/get.php");
                             // ISSO SERÀ FEITO ATRAVES DA 
 
                             if (!empty($response)) {
                                 foreach ($response["data"] as $marca) {
-                                    echo '<option value="' . $marca["id_marca"] . '" >' . $marca["marca"] . '</option>';
+                                    $selected = (isset($produto) && $produto["id_marca"] == $marca["id_marca"])  ? "selected" : "";
+                                    echo '<option ' . $selected . ' value="' . $marca["id_marca"] . '" >' . $marca["marca"] . '</option>';
                                 }
                             } else {
                                 echo '<option value="" disabled>Nenhuma marca cadastrada</option>';
@@ -87,55 +91,54 @@ if (isset($_GET["key"])) {
                     if (isset($produto["imagem"])) {
                         echo '
                         <div class="mb-3">
-                            <input type="hidden" name="currentImage" value="' . $$produto["imagem"] . '">
-                            <img width="100" src="/produtos/imagens/' . $$produto["imagem"] . '">
+                            <input type="hidden" name="currentImage" value="' . $produto["imagem"] . '">
+                            <img width="100" src="/produtos/imagens/' . $produto["imagem"] . '">
                         </div>
                         ';
                     }
                     ?>
-
-            </div>
-            <div class="mb-3">
-                <label for="preco" class="form-label">Preço</label>
-                <input type="number" step="0.01" class="form-control" id="preco" name="preco" placeholder="R$..." required value="<?php echo isset($produto) ? $produto["preco"] : ""; ?>">
-            </div>
-            <div class="mb-3">
-                <label for="quantidade" class="form-label">Quantidade</label>
-                <input type="number" class="form-control" id="quantidade" name="quantidade" placeholder="Quant..." required value="<?php echo isset($produto) ? $produto["quantidade"] : ""; ?>">
-            </div>
+                    <div class="mb-3">
+                        <label for="preco" class="form-label">Preço</label>
+                        <input type="number" step="0.01" class="form-control " id="preco" name="preco" placeholder="R$..." required value="<?php echo isset($produto) ? $produto["preco"] : ""; ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantidade" class="form-label">Quantidade</label>
+                        <input type="number" class="form-control " id="quantidade" name="quantidade" placeholder="Quant..." required value="<?php echo isset($produto) ? $produto["quantidade"] : ""; ?>">
+                    </div>
 
 
-            <button type="submit" class="btn btn-primary">Salvar</button>
-            </form>
-        </div>
-        <div class="col-md-6">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">ID</th>
-                        <th scope="col">Imagem</th>
-                        <th scope="col">Produto</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Marca</th>
-                        <th scope="col">Quantidade</th>
-                        <th scope="col">Preco</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="produtoTableBody">
-                    <!-- Os clientes serão carregados aqui via PHP -->
-                    <?php
-                    // Deixa a key null para mostrar todos os clientes
-                    $key = null;
-                    // SE HOUVER CLIENTES NA BD, EXIBIR
-                    require("../requests/produtos/get.php");
-                    if (!empty($response)) {
-                        foreach ($response["data"] as $key => $produto) {
-                            echo '
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+
+
+                </form>
+            </div>
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Imagem</th>
+                            <th scope="col">Produto</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Quantidade</th>
+                            <th scope="col">Preco</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="produtoTableBody">
+                        <!-- Os clientes serão carregados aqui via PHP -->
+                        <?php
+
+                        // SE HOUVER CLIENTES NA BD, EXIBIR
+                        require("../requests/produtos/get.php");
+                        if (!empty($response)) {
+                            foreach ($response["data"] as $key => $produto) {
+                                echo '
                                 <tr>
                                     <th scope="row">' . $produto['id_produto'] . '</th>
-                                    <td><img width="60" src="/produtos/imagens/' . $produto["imagem"] . '"></td>
+                                    <td><img width="60" src="../produtos/imagens/' . $produto["imagem"] . '"></td>
+
                                     <td>' . $produto["produto"] . '</td>
                                     <td>' . $produto["descricao"] . '</td>
                                     <td>' . $produto["marca"] . '</td>
@@ -147,19 +150,19 @@ if (isset($_GET["key"])) {
                                     </td>
                                 </tr>
                                 ';
-                        }
-                    } else {
-                        echo '
+                            }
+                        } else {
+                            echo '
                             <tr>
                                 <td colspan="7">Nenhum produto cadastrado</td>
                             </tr>
                             ';
-                    }
-                    ?>
-                </tbody>
-            </table>
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
     </div>
 
     <!-- Bootstrap JS (opcional, para funcionalidades como o menu hamburguer) -->

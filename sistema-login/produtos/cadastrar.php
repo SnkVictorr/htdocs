@@ -35,7 +35,7 @@ try {
         // GERAR UM NOVO NOME PARA O ARQUIVO
         $novo_nome = md5(uniqid() . microtime()) . ".$extensao";
         // MOVER O ARQUIVO PARA A PASTA DE IMAGENS
-        move_uploaded_file($_FILES["imagem"]["tmp_name"], "imagens/$novo_nome");
+        move_uploaded_file($_FILES["imagem"]["tmp_name"], "../produtos/imagens/$novo_nome");
         // ADICIONAR O NOME DO ARQUIVO NO POST
         $_POST["imagem"] = $novo_nome;
 
@@ -52,7 +52,7 @@ try {
     $msg = '';
 
 
-    if ($_POST["id_produto"] == "") {
+    if ($_POST["productId"] == "") {
         $postfields = array(
             "produto" => $_POST["produto"],
             "descricao" => $_POST["descricao"],
@@ -65,7 +65,7 @@ try {
         require("../requests/produtos/post.php");
     } else {
         $postfields = array(
-            "id_produto" => $_POST["id_produto"],
+            "id_produto" => $_POST["productId"],
             "produto" => $_POST["produto"],
             "descricao" => $_POST["descricao"],
             "id_marca" => $_POST["id_marca"],

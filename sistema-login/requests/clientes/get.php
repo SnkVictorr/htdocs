@@ -1,9 +1,9 @@
 <?php
 
 if (isset($key) && is_numeric($key)) {
-    $url = "http://localhost:8080/fornecedores/" . $key;
+    $url = "http://localhost:8080/clientes/" . $key;
 } else {
-    $url = "http://localhost:8080/fornecedores/";
+    $url = "http://localhost:8080/clientes/";
 }
 
 // INICIAR SESSÃO GLOBAL

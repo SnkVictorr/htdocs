@@ -9,6 +9,7 @@ if (isset($_GET["key"])) {
     $key = $_GET["key"];
     // SE HOUVER KEY, BUSCA O CLIENTE NO BANCO DE DADOS
     require("../requests/fornecedores/get.php");
+    $key = null;
     if (isset($response["data"]) && !empty($response["data"])) {
         // Se houver dados, pega o primeiro e unico cliente na posição [0]
         $fornecedor = $response["data"][0];
@@ -157,7 +158,7 @@ if (isset($_GET["key"])) {
 
                         <?php
 
-                        $key = null;
+
 
                         require("../requests/fornecedores/get.php");
                         if (!empty($response)) {

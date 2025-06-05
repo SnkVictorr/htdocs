@@ -8,8 +8,8 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produtos
-            WHERE id_produto = :id
+            FROM clientes
+            WHERE id_cliente = :id
         ";
 
         // Preparar a sintaxe SQL
@@ -24,7 +24,7 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produtos
+            FROM clientes
             WHERE nome LIKE :nome
             ORDER BY nome
         ";
@@ -33,12 +33,29 @@ try {
         $stmt = $conn->prepare($sql);
         // Vincular o parâmetro :nome com o valor da variável $nome
         $stmt->bindValue(':nome', '%' . $nome . '%', PDO::PARAM_STR);
+    }
+    // Verifica se há uma Cidade na URL para consulta
+    elseif (isset($_GET["cidade"]) && is_string($_GET["cidade"])) {
+        $cidade = $_GET["cidade"];
+
+        // Monta a sintaxe SQL de busca
+        $sql = "
+            SELECT * 
+            FROM clientes
+            WHERE cidade LIKE :cidade
+            ORDER BY nome
+        ";
+
+        // Preparar a sintaxe SQL
+        $stmt = $conn->prepare($sql);
+        // Vincular o parâmetro :cidade com o valor da variável $cidade
+        $stmt->bindValue(':cidade', '%' . $cidade . '%', PDO::PARAM_STR);
     } else {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produtos
-            ORDER BY produto
+            FROM clientes
+            ORDER BY nome
         ";
 
         // Preparar a sintaxe SQL

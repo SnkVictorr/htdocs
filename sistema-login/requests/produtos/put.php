@@ -6,7 +6,6 @@ $curl = curl_init();
 curl_setopt_array($curl, array(
     CURLOPT_URL => "http://localhost:8080/produtos/",
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT => 3,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'PUT',
     CURLOPT_HTTPHEADER => array(

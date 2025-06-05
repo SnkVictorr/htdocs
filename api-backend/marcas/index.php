@@ -6,11 +6,12 @@ require_once '../headers.php';
 // VERIFICAR O MÉTODO DA REQUISIÇÃO
 if (method == 'GET') {
     include "get.php";
-} elseif (method == 'POST') {
+} elseif(method == 'POST') {
     include "post.php";
-} elseif (method == 'PUT') {
+} elseif(method == 'PUT') {
     include "put.php";
-} elseif (method == 'DELETE') {
+} elseif(method == 'DELETE') {
     include "delete.php";
 } else {
+
 }
