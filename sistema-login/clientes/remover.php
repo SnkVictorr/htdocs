@@ -3,8 +3,8 @@
 // CHAMA O ARQUIVO ABAIXO NESTA TELA
 include "../verificar-autenticacao.php";
 
-if (isset($_GET["key"])) {
-    $key = $_GET["key"];
+if (isset($_GET["key"]) && is_numeric($_GET["key"])) {
+    $key = (int) $_GET["key"];
     // // EXCLUIR IMAGEM DO PRODUTO
     // if (file_exists("imagens/" . $_SESSION["clientes"][$key]["clientImage"])) {
     //     unlink("imagens/" . $_SESSION["clientes"][$key]["clientImage"]);
@@ -16,9 +16,14 @@ if (isset($_GET["key"])) {
     // $_SESSION["msg"] = "Cliente removido com sucesso!";
 
     require "../requests/clientes/get.php";
-    $imagem = $response["data"][0]["imagem"];
-    if (file_exists('./sistema-login/produtos/imagens/' . $imagem . '')) {
-        unlink('./sistema-login/produtos/imagens/' . $imagem . '');
+
+    
+    if (!empty($response["data"][0]["imagem"])) {
+        $imagem = $response["data"][0]["imagem"];
+        $path = '../produtos/imagens/' . $imagem;
+        if (file_exists($path)) {
+            unlink($path);
+        }
     }
     require "../requests/clientes/delete.php";
     $_SESSION["msg"] = $response["message"];

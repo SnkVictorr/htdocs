@@ -35,7 +35,10 @@ $pagina = "home";
                     <div class="card-body text-center">
                         <i class="bi bi-people" style="font-size: 2rem;"></i>
                         <h5 class="card-title mt-2">Clientes
-                            (<?php echo isset($_SESSION["clientes"]) ? count($_SESSION["clientes"]) : 0; ?>)
+
+                            (<?php
+                                require('./requests/clientes/get.php');
+                                echo isset($response['data']) ? count($response['data']) : 0; ?>)
                         </h5>
                     </div>
                     <div class="card-footer text-center">
@@ -49,7 +52,10 @@ $pagina = "home";
                     <div class="card-body text-center">
                         <i class="bi bi-truck" style="font-size: 2rem;"></i>
                         <h5 class="card-title mt-2">Fornecedores
-                            (<?php echo isset($_SESSION["fornecedores"]) ? count($_SESSION["fornecedores"]) : 0; ?>)
+
+                            (<?php
+                                require('./requests/fornecedores/get.php');
+                                echo isset($response['data']) ? count($response['data']) : 0; ?>)
                         </h5>
                     </div>
                     <div class="card-footer text-center">
@@ -61,9 +67,12 @@ $pagina = "home";
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <div class="card-body text-center">
-                        <i class="bi bi-people" style="font-size: 2rem;"></i>
+                        <i class="bi bi-gift" style="font-size: 2rem;"></i>
                         <h5 class="card-title mt-2">Produtos
-                            (<?php echo isset($_SESSION["produtos"]) ? count($_SESSION["produtos"]) : 0; ?>)
+
+                            (<?php
+                                require('./requests/produtos/get.php');
+                                echo isset($response['data']) ? count($response['data']) : 0; ?>)
                         </h5>
                     </div>
                     <div class="card-footer text-center">
