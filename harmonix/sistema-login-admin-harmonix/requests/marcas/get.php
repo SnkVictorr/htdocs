@@ -1,27 +1,24 @@
 <?php
 
+
+if (isset($key) && is_numeric($key)) {
+    $url = "http://localhost:8080/marcas/" . $key;
+} else {
+    $url = "http://localhost:8080/marcas/";
+}
+
 // INICIAR SESSÃO GLOBAL
 $curl = curl_init();
 // CONFIGURAR O CURL
 curl_setopt_array($curl, array(
-    CURLOPT_URL => "http://localhost:8080/produtos/",
+    CURLOPT_URL => $url,
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_TIMEOUT => 3,
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
         'Content-Type: application/json'
     ),
-    CURLOPT_POSTFIELDS => json_encode($postfields),
 ));
-
-// PARA TESTAR
-// echo "<pre>";
-// echo "JSON enviado:\n";
-// echo json_encode($postfields, JSON_PRETTY_PRINT);
-// echo "</pre>";
-// exit;
-
 // RECUPERA O RETORNO DO CURL
 $response = curl_exec($curl);
 // ENCERRAR O CURL

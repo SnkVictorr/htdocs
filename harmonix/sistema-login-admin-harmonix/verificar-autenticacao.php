@@ -11,7 +11,7 @@ if (!isset($_SESSION["autenticado"]) || $_SESSION["autenticado"] == false) {
 else {
     $tempo_login = $_SESSION["tempo_login"];
     $tempo_agora = time();
-    $tempo_limite = 300; //segundos
+    $tempo_limite = 30000; //segundos
     $tempo_expirado = $tempo_login + $tempo_limite;
 
     if ($tempo_agora <= $tempo_expirado) {

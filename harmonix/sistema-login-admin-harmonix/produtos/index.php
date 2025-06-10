@@ -6,8 +6,14 @@ include "../../api-backend/conn.php";
 $pagina = "produtos";
 if (isset($_GET["key"])) {
     $key = $_GET["key"];
-    // print_r($_SESSION["produtos"][$key]);
-    $product = $_SESSION["produtos"][$key];
+    require("../requests/produtos/get.php");
+
+    $key = null;
+    if (isset($response["data"]) && !empty($response["data"])) {
+        $produto = $response['data'][0];
+    } else {
+        $produto = null;
+    }
 }
 ?>
 
@@ -46,7 +52,7 @@ if (isset($_GET["key"])) {
                     </div>
                     <div class="mb-3">
                         <label for="productName" class="form-label">Nome do Produto</label>
-                        <input type="text" class="form-control" id="productName" name="productName" placeholder="Produto..." required value="<?php echo isset($product) ? $product["productName"] : ""; ?>">
+                        <input type="text" class="form-control" id="productName" name="productName" placeholder="Produto..." required value="<?php echo isset($produto) ? $produto["nome"] : ""; ?>">
                     </div>
 
                     <div class="mb-3">
@@ -54,29 +60,32 @@ if (isset($_GET["key"])) {
                         <select class="form-select" id="productCategory" name="productCategory" required>
                             <option value="" disabled selected>Selecione uma categoria...</option>
                             <?php
-                            $sql = "SELECT * FROM categoria";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->execute();
-                            $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($categories as $category) {
-                                echo '<option value="' . $category["categoria_id"] . '" ' . (isset($product) && $product["categoria_id"] == $category["categoria_id"] ? 'selected' : '') . '>' . $category["nome"] . '</option>';
+                            require("../requests/categorias/get.php");;
+                            if (!empty($response)) {
+                                foreach ($response["data"] as $categoria) {
+                                    $selected = (isset($produto) && $produto["categoria_id"] == $categoria["categoria_id"]) ? "selected" : "";
+                                    echo '<option ' . $selected . 'value="' . $categoria["categoria_id"] . '">' . $categoria["categoria"] . '</option>';
+                                }
+                            } else {
+                                echo '<option value="" disabled>Nenhuma categoria cadastrada</option>';
                             }
                             ?>
                         </select>
+                        <!-- Arrumar depois de arrumra o get -->
                     </div>
                     <div class="mb-3">
                         <label for="productBrand" class="form-label">Marca</label>
                         <select class="form-select" id="productBrand" name="productBrand" required>
                             <option value="" disabled selected>Selecione uma marca...</option>
                             <?php
-                            $sql = "SELECT * FROM marca";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->execute();
-                            $brands = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                            foreach ($brands as $brand) {
-                                echo '<option value="' . $brand["marca_id"] . '" ' . (isset($product) && $product["marca_id"] == $brand["marca_id"] ? 'selected' : '') . '>' . $brand["nome"] . '</option>';
+                            require("../requests/marcas/get.php");
+                            if (!empty($response)) {
+                                foreach ($response["data"] as $marca) {
+                                    $selected = (isset($produto) && $produto["marca_id"] == $marca["marca_id"])  ? "selected" : "";
+                                    echo '<option ' . $selected . ' value="' . $marca["marca_id"] . '" >' . $marca["marca"] . '</option>';
+                                }
+                            } else {
+                                echo '<option value="" disabled>Nenhuma marca cadastrada</option>';
                             }
                             ?>
                         </select>
@@ -133,36 +142,7 @@ if (isset($_GET["key"])) {
                         </tr>
                     </thead>
                     <tbody id="productTableBody">
-                        <?php
-                        require("../requests/produtos/get.php");
-                        if (!empty($response)) {
-                            foreach ($response["data"] as $key => $product) {
-                                echo '
-                                <tr>
-                                    <th scope="row">' . $product['product_id'] . '</th>
-                                    <td ><img src="' . $product["image_url"] . '" width="50"></td>
-                                    <td style="white-space: nowrap;">' . $product["nome"] . '</td>
-                                    <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">' . $product["descricao"] . '</td>
-                                    <td style="white-space: nowrap;">R$ ' . number_format($product["desconto"], 2, ",", ".") . '</td>
-                                    <td style="white-space: nowrap;">R$ ' . number_format($product["preco"], 2, ",", ".") . '</td>
-                                    <td style="white-space: nowrap;">R$ ' . number_format(($product["preco"] - $product["desconto"]), 2, ",", ".") . '</td>
-                                    <td style="white-space: nowrap;">' . $product["estoque"] . '</td>
-                                        <td>
-                                        <a href="/produtos/?key=' . $product["id_cliente"] . '" class="btn btn-warning">Editar</a>
-                                        <a href="/produtos/remover.php?key=' . $product["id_cliente"] . '" class="btn btn-danger">Excluir</a>
-                                        
-                                        </td>
-                                </tr>
-                                ';
-                            }
-                        } else {
-                            echo '
-                            <tr>
-                            <td colspan = "7">Nenhum produto cadastrado!</td>
-                            </tr>
-                            ';
-                        }
-                        ?>
+
                     </tbody>
                 </table>
             </div>

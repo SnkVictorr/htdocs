@@ -1,10 +1,10 @@
 <?php
 include "../verificar-autenticacao.php";
-echo "<pre>";
-print_r($_POST);
-print_r($_FILES);
-echo "</pre>";
-exit;
+// echo "<pre>";
+// print_r($_POST);
+// print_r($_FILES);
+// echo "</pre>";
+// exit;
 try {
 
     if (!$_POST) {
@@ -53,7 +53,7 @@ try {
         $postfields = array(
             "categoria_id" => $_POST["productCategory"],
             "marca_id" => $_POST["productBrand"],
-            "nome" => $_POST["productName"],
+            "produto" => $_POST["productName"],
             "descricao" => $_POST["productDescription"],
             "preco" => str_replace(',', '.', $_POST['productPrice']),
             "desconto" => str_replace(',', '.', $_POST['productPriceWDiscount']),
@@ -66,13 +66,14 @@ try {
             "id" => $_POST["productId"],
             "categoria_id" => $_POST["productCategory"],
             "marca_id" => $_POST["productBrand"],
-            "nome" => $_POST["productName"],
+            "produto" => $_POST["productName"],
             "descricao" => $_POST["productDescription"],
             "preco" => $_POST["productPrice"],
             "desconto" => $_POST["productPriceWDiscount"],
             "estoque" => $_POST["productQuantity"],
             "image_url" => $_POST["productImage"],
         );
+
         // SENÃO, SIGNIFICA QUE É UM PRODUTO JÁ CADASTRADO
         require("../requests/clientes/put.php");
     }
@@ -80,6 +81,5 @@ try {
 } catch (Exception $e) {
     $_SESSION["msg"] = $e->getMessage();
 } finally {
-    echo "oi";
-    // header("Location: ./");
+    header("Location: ./");
 }
