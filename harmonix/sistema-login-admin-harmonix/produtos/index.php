@@ -109,14 +109,14 @@ if (isset($_GET["key"])) {
                     </div>
                     <div class="mb-3">
                         <label for="productImage" class="form-label">Imagem</label>
-                        <input type="file" accept="image/*" class="form-control" id="productImage" name="productImage" value="<?php echo isset($product) ? $product["productImage"] : ""; ?>">
+                        <input type="file" accept="image/*" class="form-control" id="productImage" name="productImage" value="<?php echo isset($produto) ? $produto["imagem"] : ""; ?>">
                     </div>
                     <?php
                     if (isset($product["productImage"])) {
                         echo '
                         <div class="mb-3">
                             <input type="hidden" name="currentImage" value="' . $product["productImage"] .  '">
-                            <img width="100" src="imagens/' . $product["productImage"] . '">
+                            <img width="100" src="../produtos/imagens/' . $product["productImage"] . '">
                         </div>
                         ';
                     }
@@ -130,19 +130,55 @@ if (isset($_GET["key"])) {
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
+                            <th scope="col">#</th>
+                            <th scope="col">Imagem</th>
                             <th scope="col">Nome</th>
                             <th scope="col">Descrição</th>
-                            <th scope="col">Desconto</th>
+                            <th scope="col">Marca</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Estoque</th>
                             <th scope="col">Preço</th>
+                            <th scope="col">Desconto</th>
                             <th scope="col" style="white-space: nowrap;">Preço com Desconto</th>
-                            <th scope="col">Quantidade</th>
 
                         </tr>
                     </thead>
                     <tbody id="productTableBody">
+                        <?php
 
+                        require("../requests/produtos/get.php");
+                        if (!empty($response)) {
+                            foreach ($response["data"] as $key => $produto) {
+                                echo '
+                                <tr>
+                                    <th scope="row">' . $produto['produto_id'] . '</th>
+                                    <td><img width="60" src="../produtos/imagens/' . $produto["image_url"] . '"></td>
+
+                                    <td>' . $produto["produto"] . '</td>
+                                    <td>' . $produto["descricao"] . '</td>
+                                    <td>' . $produto["marca"] . '</td>
+                                    <td>' . $produto["categoria"] . '</td>
+                                    <td>' . $produto["estoque"] . '</td>
+                                    <td>R$ ' . number_format($produto["preco"], 2, ",", ".") . '</td>
+                                    <td>R$ ' . number_format($produto["desconto"], 2, ",", ".") . '</td>
+                                    <td>R$ ' . number_format($produto["preco"] - $produto["desconto"], 2, ",", ".")     . '</td>
+
+                                    <td>
+                                        <a href="/produtos/formulario.php?key=' . $produto['produto_id'] . '" class="btn btn-warning">Editar</a>
+                                        <a href="/produtos/remover.php?key=' . $produto['produto_id'] . '" class="btn btn-danger">Excluir</a>
+                                    </td>
+                                </tr>
+                                ';
+                            }
+                        } else {
+                            echo '
+                            <tr>
+                                <td colspan="7">Nenhum produto cadastrado</td>
+                            </tr>
+                            ';
+                        }
+
+                        ?>
                     </tbody>
                 </table>
             </div>

@@ -17,7 +17,7 @@ try {
         //gerar um novo nome para o arquivo
         $novo_nome = md5(uniqid() . microtime()) . ".$extensao";
         // VERIFICAR SE O DIRETORIO EXISTE
-        $diretorio = "imagens";
+        $diretorio = "../produtos/imagens";
         if (!is_dir($diretorio)) {
             mkdir($diretorio, 0755); // 0755 é um dos niveis de permissão FTP
         }

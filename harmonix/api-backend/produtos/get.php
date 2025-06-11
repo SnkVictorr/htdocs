@@ -1,42 +1,39 @@
 <?php
 try {
 
-    // Verifica se há um ID na URL para consulta específica
+
     if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
         $id = $_GET["id"];
 
-        // Monta a sintaxe SQL de busca
+
         $sql = "
             SELECT * 
             FROM produto
             JOIN marca ON produto.marca_id = marca.marca_id
+            JOIN categoria ON produto.categoria_id = categoria.categoria_id
             WHERE id_produto = :id
         ";
 
-        // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
-        // Vincular o parâmetro :id com o valor da variável $id
+
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    }
-    // Verifica se há um produto na URL para consulta
-    elseif (isset($_GET["produto"]) && is_string($_GET["produto"])) {
+    } elseif (isset($_GET["produto"]) && is_string($_GET["produto"])) {
         $produto = $_GET["produto"];
 
-        // Monta a sintaxe SQL de busca
+
         $sql = "
             SELECT * 
             FROM produto
             JOIN marca ON produto.marca_id = marca.marca_id
+            JOIN categoria ON produto.categoria_id = categoria.categoria_id
             WHERE produto LIKE :produto
         ";
 
         // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
-        // Vincular o parâmetro :produto com o valor da variável $produto
+
         $stmt->bindValue(':produto', '%' . $produto . '%', PDO::PARAM_STR);
-    }
-    // Verifica se há um produto na URL para consulta
-    elseif (isset($_GET["marca_id"]) && is_string($_GET["marca_id"])) {
+    } elseif (isset($_GET["marca_id"]) && is_string($_GET["marca_id"])) {
         $marca_id = $_GET["marca_id"];
 
         // Monta a sintaxe SQL de busca
@@ -50,14 +47,31 @@ try {
 
         // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
-        // Vincular o parâmetro :produto com o valor da variável $produto
+
         $stmt->bindValue(':marca_id', '%' . $marca_id . '%', PDO::PARAM_STR);
+    } elseif (isset($_GET["categoria_id"]) && is_string($_GET["categoria_id"])) {
+        $categoria_id = $_GET["categoria_id"];
+
+        // Monta a sintaxe SQL de busca
+        $sql = "
+            SELECT * 
+            FROM produto
+            JOIN categoria ON produto.categoria_id = categoria.categoria_id
+            WHERE categoria_id = :categoria_id
+
+        ";
+
+        // Preparar a sintaxe SQL
+        $stmt = $conn->prepare($sql);
+
+        $stmt->bindValue(':categoria_id', '%' . $categoria_id . '%', PDO::PARAM_STR);
     } else {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
             FROM produto
             JOIN marca ON produto.marca_id = marca.marca_id
+            JOIN categoria ON produto.categoria_id = categoria.categoria_id
         ";
 
         // Preparar a sintaxe SQL

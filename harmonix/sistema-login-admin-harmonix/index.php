@@ -21,7 +21,10 @@ include "verificar-autenticacao.php";
                 <div class="card text-center">
                     <div class="card-body">
                         <i class="bi bi-box-seam" style="font-size: 2rem;"></i>
-                        <h5 class="card-title mt-2">Produtos (<?php echo isset($_SESSION["produtos"]) ? count($_SESSION["produtos"]) : 0; ?>)</h5>
+                        <h5 class="card-title mt-2">Produtos
+                            (<?php
+                                require('./requests/produtos/get.php');
+                                echo isset($response['data']) ? count($response['data']) : 0; ?>)</h5>
                     </div>
                     <div class="card-footer text-center">
                         <a href="<?php echo $_SESSION['url']; ?>/produtos" class="btn btn-primary">Acessar</a>
