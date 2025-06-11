@@ -63,7 +63,7 @@ try {
         require("../requests/produtos/post.php");
     } else {
         $postfields = array(
-            "id" => $_POST["productId"],
+            "produto_id" => $_POST["productId"],
             "categoria_id" => $_POST["productCategory"],
             "marca_id" => $_POST["productBrand"],
             "produto" => $_POST["productName"],

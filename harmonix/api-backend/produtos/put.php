@@ -6,13 +6,16 @@ try {
 
     // Verificar se existe informações de formulário
     if (!empty($postfields)) {
-        $id = $postfields['id_produto'] ?? null;
+        $id = $postfields['produto_id'] ?? null;
+        $categoria_id = $postfields['categoria_id'] ?? null;
+        $marca_id = $postfields['marca_id'] ?? null;
         $produto = $postfields['produto'] ?? null;
         $descricao = $postfields['descricao'] ?? null;
-        $id_marca = $postfields['id_marca'] ?? null;
-        $imagem = $postfields['imagem'] ?? null;
-        $quantidade = $postfields['quantidade'] ?? null;
         $preco = $postfields['preco'] ?? null;
+        $desconto = $postfields['desconto'] ?? null;
+        $estoque = $postfields['estoque'] ?? null;
+        $image_url = $postfields['image_url'] ?? null;
+
 
 
         // Verifica campos obrigatórios
@@ -26,24 +29,28 @@ try {
         }
 
         $sql = "
-        UPDATE produtos SET 
+        UPDATE produto SET 
+            categoria_id = :categoria_id
+            marca_id = :marca_id
             produto = :produto,
             descricao = :descricao,
-            id_marca = :id_marca,
-            imagem = :imagem,
-            quantidade = :quantidade, 
+            estoque = :estoque, 
             preco = :preco
-        WHERE id_produto = :id
+            desconto = :desconto
+            image_url = :image_url,
+        WHERE produto_id = :id
         ";
 
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);
+        $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
         $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);
         $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
-        $stmt->bindParam(':id_marca', $id_marca, PDO::PARAM_STR);
-        $stmt->bindParam(':imagem', $imagem, PDO::PARAM_STR);
-        $stmt->bindParam(':quantidade', $quantidade, PDO::PARAM_STR);
-        $stmt->bindParam(':preco', $preco);
+        $stmt->bindParam(':preco', $preco, PDO::PARAM_STR);
+        $stmt->bindParam(':desconto', $desconto, PDO::PARAM_STR);
+        $stmt->bindParam(':estoque', $estoque, PDO::PARAM_INT);
+        $stmt->bindParam(':image_url', $image_url, PDO::PARAM_STR);
 
 
         $stmt->execute();

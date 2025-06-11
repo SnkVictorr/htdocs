@@ -6,8 +6,8 @@ try {
         $id = $_GET['id'];
 
         $sql = "
-        DELETE FROM produtos 
-        WHERE id_produto = :id
+        DELETE FROM produto 
+        WHERE produto_id = :id
         ";
 
         $stmt = $conn->prepare($sql);

@@ -17,10 +17,10 @@ if (isset($_GET["key"]) && is_numeric($_GET["key"])) {
 
     require "../requests/clientes/get.php";
 
-    
-    if (!empty($response["data"][0]["imagem"])) {
-        $imagem = $response["data"][0]["imagem"];
-        $path = '../produtos/imagens/' . $imagem;
+
+    if (!empty($response["data"][$key]["imagem"])) {
+        $imagem = $response["data"][$key]["imagem"];
+        $path = '../clientes/imagens/' . $imagem;
         if (file_exists($path)) {
             unlink($path);
         }
