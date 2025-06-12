@@ -1,6 +1,6 @@
 <?php
 include "../verificar-autenticacao.php";
-include "../../api-backend/conn.php";
+
 
 //Indica qual página está
 $pagina = "produtos";
@@ -15,6 +15,7 @@ if (isset($_GET["key"])) {
         $produto = null;
     }
 }
+
 ?>
 
 
@@ -65,14 +66,13 @@ if (isset($_GET["key"])) {
                             if (!empty($response)) {
                                 foreach ($response["data"] as $categoria) {
                                     $selected = (isset($produto) && $produto["categoria_id"] == $categoria["categoria_id"]) ? "selected" : "";
-                                    echo '<option ' . $selected . 'value="' . $categoria["categoria_id"] . '">' . $categoria["categoria"] . '</option>';
+                                    echo '<option ' . $selected . ' value="' . $categoria["categoria_id"] . '">' . $categoria["categoria"] . '</option>';
                                 }
                             } else {
                                 echo '<option value="" disabled>Nenhuma categoria cadastrada</option>';
                             }
                             ?>
                         </select>
-                        <!-- Arrumar depois de arrumra o get -->
                     </div>
                     <div class="mb-3">
                         <label for="productBrand" class="form-label">Marca</label>

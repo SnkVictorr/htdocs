@@ -23,26 +23,28 @@ try {
             http_response_code(400);
             throw new Exception('ID do cliente é obrigatório');
         }
-        if (empty($produto) || empty($postfields['id_marca'])) {
+        if (empty($produto) || empty($postfields['marca_id'])) {
             http_response_code(400);
             throw new Exception('Marca e produto são obrigatórios');
         }
 
         $sql = "
         UPDATE produto SET 
-            categoria_id = :categoria_id
-            marca_id = :marca_id
+            categoria_id = :categoria_id,
+            marca_id = :marca_id,
             produto = :produto,
             descricao = :descricao,
             estoque = :estoque, 
-            preco = :preco
-            desconto = :desconto
-            image_url = :image_url,
+            preco = :preco,
+            desconto = :desconto,
+            image_url = :image_url
         WHERE produto_id = :id
         ";
 
-        $stmt = $conn->prepare($sql);
 
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);
         $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
         $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);

@@ -19,7 +19,7 @@ try {
     }
     // Verifica se há um Produto na URL para consulta
     elseif (isset($_GET["marca"]) && is_string($_GET["marca"])) {
-        $produto = $_GET["marca"];
+        $marca = $_GET["marca"];
 
         // Monta a sintaxe SQL de busca
         $sql = "

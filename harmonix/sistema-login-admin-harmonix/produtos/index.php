@@ -1,6 +1,6 @@
 <?php
 include "../verificar-autenticacao.php";
-include "../../api-backend/conn.php";
+
 
 //Indica qual página está
 $pagina = "produtos";
@@ -15,6 +15,7 @@ if (isset($_GET["key"])) {
         $produto = null;
     }
 }
+
 ?>
 
 
@@ -27,6 +28,7 @@ if (isset($_GET["key"])) {
     <title>Dashboard - Cadastro de Produtos</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -40,8 +42,11 @@ if (isset($_GET["key"])) {
         <div class="row">
             <div class="col">
                 <!-- Tabela de produtos cadastrados -->
-                <h2>Produtos Cadastrados</h2>
-                <table class="table table-striped">
+                <h1>Produtos Cadastrados
+                    <a href="/produtos/formulario.php" class="btn btn-primary btn-sm">Novo Produto</a>
+
+                </h1>
+                <table class="table table-striped" id="myTable">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -54,6 +59,7 @@ if (isset($_GET["key"])) {
                             <th scope="col">Preço</th>
                             <th scope="col">Desconto</th>
                             <th scope="col" style="white-space: nowrap;">Preço com Desconto</th>
+                            <th scope="col" style="white-space: nowrap;">Ações</th>
 
                         </tr>
                     </thead>
@@ -62,7 +68,9 @@ if (isset($_GET["key"])) {
 
                         require("../requests/produtos/get.php");
                         if (!empty($response)) {
+
                             foreach ($response["data"] as $key => $produto) {
+
                                 echo '
                                 <tr>
                                     <th scope="row">' . $produto['produto_id'] . '</th>
@@ -101,6 +109,19 @@ if (isset($_GET["key"])) {
 
     <!-- Bootstrap JS (opcional, para funcionalidades como o menu hamburguer) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS (para Bootstrap 5) -->
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+    <script>
+        let table = new DataTable('#myTable', {
+            language: {
+                url: "//cdn.datatables.net/plug-ins/2.3.2/i18n/pt-BR.json"
+            }
+        });
+    </script>
 </body>
 
 </html>

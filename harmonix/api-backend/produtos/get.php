@@ -11,7 +11,7 @@ try {
             FROM produto
             JOIN marca ON produto.marca_id = marca.marca_id
             JOIN categoria ON produto.categoria_id = categoria.categoria_id
-            WHERE id_produto = :id
+            WHERE produto_id = :id
         ";
 
         $stmt = $conn->prepare($sql);

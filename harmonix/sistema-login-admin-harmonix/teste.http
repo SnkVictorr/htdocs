@@ -15,7 +15,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{baseurl}}/produtos
+GET {{baseurl}}/produtos/?key=5
 
 ###
 GET {{baseurl}}/marcas

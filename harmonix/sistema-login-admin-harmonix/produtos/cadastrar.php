@@ -75,7 +75,7 @@ try {
         );
 
         // SENÃO, SIGNIFICA QUE É UM PRODUTO JÁ CADASTRADO
-        require("../requests/clientes/put.php");
+        require("../requests/produtos/put.php");
     }
     $_SESSION["msg"] = $response["message"];
 } catch (Exception $e) {
