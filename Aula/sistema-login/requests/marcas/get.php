@@ -1,11 +1,9 @@
 <?php
 
 if (isset($key) && is_numeric($key)) {
-    // Se a chave for numérica, significa que é uma requisição específica
-    $url = "http://localhost:8080/fornecedores/" . $key;
+    $url = "http://localhost:8080/marcas/?id=" . $key;
 } else {
-    // Caso contrário, é uma requisição para todos os fornecedores
-    $url = "http://localhost:8080/fornecedores/";
+    $url = "http://localhost:8080/marcas/";
 }
 
 // INICIAR SESSÃO GLOBAL

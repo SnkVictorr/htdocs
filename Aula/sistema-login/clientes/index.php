@@ -43,43 +43,49 @@ if (isset($_GET["key"])) {
     <div class="container mt-5">
         <div class="row">
             <div class="col">
-                <!-- Tabela de clientes cadastrados -->
-                <h2>
-                    Clientes Cadastrados
-                    <a href="/clientes/formulario.php" class="btn btn-primary btn-sm">Novo Cliente</a>
-                    <a href="exportar.php" class="btn btn-success btn-sm float-left">Excel</a>
-                    <a href="exportar_pdf.php" class="btn btn-danger btn-sm float-left">PDF</a>
-                </h2>
-                <table class="table table-striped" id="myTable">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Imagem</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">CPF</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Whatsapp</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="clientTableBody">
-                        <!-- Os clientes serão carregados aqui via PHP -->
-                        <?php
-                        // Deixa a key null para mostrar todos os clientes
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h2>
+                            Clientes Cadastrados
+                        </h2>
+                        <div>
+                            <a href="/clientes/formulario.php" class="btn btn-primary btn-sm">Novo Cliente</a>
+                            <a href="exportar.php" class="btn btn-success btn-sm float-left">Excel</a>
+                            <a href="exportar_pdf.php" class="btn btn-danger btn-sm float-left">PDF</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
 
-                        // SE HOUVER CLIENTES NA BD, EXIBIR
-                        require("../requests/clientes/get.php");
+                        <table class="table table-striped" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Imagem</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">CPF</th>
+                                    <th scope="col">E-mail</th>
+                                    <th scope="col">Whatsapp</th>
+                                    <th scope="col">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientTableBody">
+                                <!-- Os clientes serão carregados aqui via PHP -->
+                                <?php
+                                // Deixa a key null para mostrar todos os clientes
 
-                        ?>
+                                // SE HOUVER CLIENTES NA BD, EXIBIR
+                                require("../requests/clientes/get.php");
+
+                                ?>
 
 
 
 
-                        <?php
+                                <?php
 
-                        if (!empty($response)) {
-                            foreach ($response["data"] as $key => $client) {
-                                echo '
+                                if (!empty($response)) {
+                                    foreach ($response["data"] as $key => $client) {
+                                        echo '
                                 <tr>
                                     <th scope="row">' . $client['id_cliente'] . '</th>
                                     <td><img width="60" src="/clientes/imagens/' . $client["imagem"] . '"></td>
@@ -93,18 +99,22 @@ if (isset($_GET["key"])) {
                                     </td>
                                 </tr>
                                 ';
-                            }
-                        } else {
-                            echo '
+                                    }
+                                } else {
+                                    echo '
                             <tr>
                                 <td colspan="7">Nenhum cliente cadastrado</td>
                             </tr>
                             ';
-                        }
+                                }
 
-                        ?>
-                    </tbody>
-                </table>
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>
@@ -120,7 +130,7 @@ if (isset($_GET["key"])) {
     <script>
         let table = new DataTable('#myTable', {
             language: {
-                url: "//cdn.datatables.net/plug-ins/2.3.2/i18n/pt-BR.json"
+                url: "https://cdn.datatables.net/plug-ins/2.3.2/i18n/pt-BR.json"
             }
         });
     </script>

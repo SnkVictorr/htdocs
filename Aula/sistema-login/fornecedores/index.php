@@ -29,6 +29,7 @@ if (isset($_GET["key"])) {
     <title>Dashboard - Cadastro de Fornecedores</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -47,7 +48,7 @@ if (isset($_GET["key"])) {
                     <a href="/fornecedores/formulario.php" class="btn btn-primary btn-sm">Novo Fornecedor</a>
                 </h2>
                 <!-- Tabela de fornecedores cadastrados -->
-                <table class="table table-striped">
+                <table class="table table-striped" id="myTable">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -100,38 +101,13 @@ if (isset($_GET["key"])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- jQuery Mask Plugin -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
+    <!-- DataTables JS (para Bootstrap 5) -->
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
     <script>
-        $('#fornecedorCEP').on('blur', function() {
-            var cep = $(this).val().replace(/\D/g, '');
-            // Verifica se o CEP tem 8 dígitos
-            if (cep.length === 8) {
-                // Faz a requisição para a API ViaCEP
-                $.getJSON('https://viacep.com.br/ws/' + cep + '/json/?callback=?', function(data) {
-                    if (!data.erro) {
-                        $('#fornecedorAddress').val(data.logradouro);
-                        $('#fornecedorNeighborhood').val(data.bairro);
-                        $('#fornecedorCity').val(data.localidade);
-                        $('#fornecedorState').val(data.uf);
-                    } else {
-                        alert('CEP não encontrado.');
-                        $("#fornecedorCEP").val("");
-                        $("#fornecedorAddress").val("");
-                        $("#fornecedorNeighborhood").val("");
-                        $("#fornecedorCity").val("");
-                        $("#fornecedorState").val("");
-                    }
-                });
-            } else {
-                alert('Formato de CEP inválido.');
-                // Limpa os campos de endereço
-                $("#fornecedorCEP").val("");
-                $("#fornecedorAddress").val("");
-                $("#fornecedorNeighborhood").val("");
-                $("#fornecedorCity").val("");
-                $("#fornecedorState").val("");
+        let table = new DataTable('#myTable', {
+            language: {
+                url: "https://cdn.datatables.net/plug-ins/2.3.2/i18n/pt-BR.json"
             }
         });
     </script>
