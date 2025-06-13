@@ -53,22 +53,22 @@ if (isset($_GET["key"])) {
                     <div class="card-body">
                         <form id="fornecedorForm" action="/fornecedores/cadastrar.php" method="POST" enctype="multipart/form-data">
                             <div class="row">
-                                <div class="mb-3 col-4">
+                                <div class="mb-3 col-md-4">
                                     <label for="fornecedorId" class="form-label">Código do Fornecedor</label>
                                     <input type="text" class="form-control" id="fornecedorId" name="fornecedorId" readonly value="<?php echo isset($fornecedor) ? $fornecedor['id_fornecedor'] : ""; ?>">
                                 </div>
-                                <div class="mb-3 col-8">
+                                <div class="mb-3 col-md-8">
                                     <label for="fornecedorName" class="form-label">Nome Fantasia</label>
                                     <input onblur="teste()" type="text" class="form-control" id="fornecedorName" name="fornecedorName" required value="<?php echo isset($fornecedor) ? $fornecedor["nome"] : ""; ?>">
                                 </div>
 
                             </div>
                             <div class="row">
-                                <div class="mb-3 col-7">
+                                <div class="mb-3 col-md-7">
                                     <label for="razaoSocial" class="form-label">Razao Social</label>
                                     <input onblur="teste()" type="text" class="form-control" id="razaoSocial" name="razaoSocial" required value="<?php echo isset($fornecedor) ? $fornecedor["razao_social"] : ""; ?>">
                                 </div>
-                                <div class="mb-3 col-5">
+                                <div class="mb-3 col-md-5">
                                     <label for="fornecedorCNPJ" class="form-label">CNPJ</label>
                                     <input data-mask="00.000.000/0000-00" type="text" class="form-control" id="fornecedorCNPJ" name="fornecedorCNPJ" required value="<?php echo isset($fornecedor) ? $fornecedor["cnpj"] : ""; ?>">
                                 </div>
@@ -88,11 +88,11 @@ if (isset($_GET["key"])) {
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="mb-3 col-md-5">
+                                <div class="mb-3 col-md-6">
                                     <label for="fornecedorAddress" class="form-label">Logradouro</label>
                                     <input type="text" class="form-control" id="fornecedorAddress" name="fornecedorAddress" required value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["logradouro"] : ""; ?>">
                                 </div>
-                                <div class="mb-3 col-md-3">
+                                <div class="mb-3 col-md-2">
                                     <label for="fornecedorNumber" class="form-label">Número</label>
                                     <input type="text" class="form-control" id="fornecedorNumber" name="fornecedorNumber" required value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["numero"] : ""; ?>">
                                 </div>
@@ -101,56 +101,58 @@ if (isset($_GET["key"])) {
                                     <input type="text" class="form-control" id="fornecedorComplement" name="fornecedorComplement" value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["complemento"] : ""; ?>">
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="mb-3 col-md-5">
+                                    <label for="fornecedorNeighborhood" class="form-label">Bairro</label>
+                                    <input type="text" class="form-control" id="fornecedorNeighborhood" name="fornecedorNeighborhood" required value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["bairro"] : ""; ?>">
+                                </div>
+                                <div class="mb-3 col-md-5">
+                                    <label for=" fornecedorCity" class="form-label">Cidade</label>
+                                    <input type="text" class="form-control" id="fornecedorCity" name="fornecedorCity" required value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["cidade"] : ""; ?>" readonly>
+                                </div>
+                                <div class="mb-3 col-md-2">
+                                    <label for="fornecedorState" class="form-label">Estado (UF)</label>
+                                    <select class="form-select" id="fornecedorState" name="fornecedorState" required>
+                                        <option value="">Selecione um estado</option>
+                                        <?php
+                                        $ufs = [
+                                            "AC",
+                                            "AL",
+                                            "AP",
+                                            "AM",
+                                            "BA",
+                                            "CE",
+                                            "DF",
+                                            "ES",
+                                            "GO",
+                                            "MA",
+                                            "MT",
+                                            "MS",
+                                            "MG",
+                                            "PA",
+                                            "PB",
+                                            "PR",
+                                            "PE",
+                                            "PI",
+                                            "RJ",
+                                            "RN",
+                                            "RS",
+                                            "RO",
+                                            "RR",
+                                            "SC",
+                                            "SP",
+                                            "SE",
+                                            "TO"
+                                        ];
+                                        foreach ($ufs as $uf) {
+                                            $selected = (isset($fornecedor) && $fornecedor["endereco"]["estado"] === $uf) ? "selected" : "";
+                                            echo "<option value='$uf' $selected>$uf</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                            <div class="mb-3">
-                                <label for="fornecedorNeighborhood" class="form-label">Bairro</label>
-                                <input type="text" class="form-control" id="fornecedorNeighborhood" name="fornecedorNeighborhood" required value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["bairro"] : ""; ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label for="fornecedorCity" class="form-label">Cidade</label>
-                                <input type="text" class="form-control" id="fornecedorCity" name="fornecedorCity" required value="<?php echo isset($fornecedor) ? $fornecedor["endereco"]["cidade"] : ""; ?>" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label for="fornecedorState" class="form-label">Estado (UF)</label>
-                                <select class="form-select" id="fornecedorState" name="fornecedorState" required>
-                                    <option value="">Selecione um estado</option>
-                                    <?php
-                                    $ufs = [
-                                        "AC",
-                                        "AL",
-                                        "AP",
-                                        "AM",
-                                        "BA",
-                                        "CE",
-                                        "DF",
-                                        "ES",
-                                        "GO",
-                                        "MA",
-                                        "MT",
-                                        "MS",
-                                        "MG",
-                                        "PA",
-                                        "PB",
-                                        "PR",
-                                        "PE",
-                                        "PI",
-                                        "RJ",
-                                        "RN",
-                                        "RS",
-                                        "RO",
-                                        "RR",
-                                        "SC",
-                                        "SP",
-                                        "SE",
-                                        "TO"
-                                    ];
-                                    foreach ($ufs as $uf) {
-                                        $selected = (isset($fornecedor) && $fornecedor["endereco"]["estado"] === $uf) ? "selected" : "";
-                                        echo "<option value='$uf' $selected>$uf</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
                     </div>
 
                     <div class="card-footer">

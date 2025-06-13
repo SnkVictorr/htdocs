@@ -50,11 +50,11 @@ if (isset($_GET["key"])) {
                         </h2>
                         <div>
                             <a href="/clientes/formulario.php" class="btn btn-primary btn-sm">Novo Cliente</a>
-                            <a href="exportar.php" class="btn btn-success btn-sm float-left">Excel</a>
-                            <a href="exportar_pdf.php" class="btn btn-danger btn-sm float-left">PDF</a>
+                            <a href="/clientes/exportar.php" class="btn btn-success btn-sm float-left">Excel</a>
+                            <a href="/clientes/exportar_pdf.php" class="btn btn-danger btn-sm float-left">PDF</a>
                         </div>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body overflow-auto">
 
                         <table class="table table-striped" id="myTable">
                             <thead>

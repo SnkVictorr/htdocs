@@ -4,7 +4,7 @@ include "../verificar-autenticacao.php";
 
 // DEFINE TIMEZONE PARA BRASIL
 date_default_timezone_set('America/Sao_Paulo');
-$filename = "clientes_".date('YmdHis').".xls";
+$filename = "clientes_" . date('YmdHis') . ".xls";
 
 // CABEÇALHO PARA EXPORTAR O ARQUIVO EM EXCEL
 header("Content-Type: application/vnd.ms-excel");
@@ -12,6 +12,7 @@ header("Content-Disposition: attachment; filename=$filename");
 header("Pragma: no-cache");
 
 ?>
+
 <head>
     <meta charset="utf-8">
 </head>
@@ -28,16 +29,17 @@ header("Pragma: no-cache");
     <tbody id="clientTableBody">
         <!-- Os clientes serão carregados aqui via PHP -->
         <?php
+        require('../requests/clientes/get.php');
         // SE HOUVER CLIENTES NA SESSÃO, EXIBIR
-        if(!empty($_SESSION["clientes"])) {
-            foreach($_SESSION["clientes"] as $key => $client) {
+        if (!empty($response)) {
+            foreach ($response["data"] as $key => $client) {
                 echo '
                 <tr>
-                    <th style="border:1px solid black" scope="row">'.($key + 1).'</th>
-                    <td style="border:1px solid black">'.$client["clientName"].'</td>
-                    <td style="border:1px solid black">'.$client["clientCPF"].'</td>
-                    <td style="border:1px solid black">'.$client["clientEmail"].'</td>
-                    <td style="border:1px solid black">'.$client["clientWhatsapp"].'</td>
+                    <th style="border:1px solid black" scope="row">' . ($key + 1) . '</th>
+                    <td style="border:1px solid black">' . $client["nome"] . '</td>
+                    <td style="border:1px solid black">' . $client["cpf"] . '</td>
+                    <td style="border:1px solid black">' . $client["email"] . '</td>
+                    <td style="border:1px solid black">' . $client["whatsapp"] . '</td>
                 </tr>
                 ';
             }

@@ -6,17 +6,19 @@ include "../verificar-autenticacao.php";
 require_once '../mpdf/vendor/autoload.php';
 
 $lista = "";
-if(!empty($_SESSION["clientes"])) {
-    foreach($_SESSION["clientes"] as $key => $client) {
+require("../requests/clientes/get.php");
+
+if (!empty($response)) {
+    foreach ($response["data"] as $key => $client) {
         // .= ADICIONA ITENS NA VARIÁVEL $lista
         $lista .= '
         <tr>
-            <th style="border:1px solid black" scope="row">'.($key + 1).'</th>
-            <td style="border:1px solid black"><img src="imagens/'.$client["clientImage"].'" width="100"></td>
-            <td style="border:1px solid black">'.$client["clientName"].'</td>
-            <td style="border:1px solid black">'.$client["clientCPF"].'</td>
-            <td style="border:1px solid black">'.$client["clientEmail"].'</td>
-            <td style="border:1px solid black">'.$client["clientWhatsapp"].'</td>
+            <th style="border:1px solid black" scope="row">' . ($key + 1) . '</th>
+            <td style="border:1px solid black"><img src="imagens/' . $client["imagem"] . '" width="100"></td>
+            <td style="border:1px solid black">' . $client["nome"] . '</td>
+            <td style="border:1px solid black">' . $client["cpf"] . '</td>
+            <td style="border:1px solid black">' . $client["email"] . '</td>
+            <td style="border:1px solid black">' . $client["whatsapp"] . '</td>
         </tr>
         ';
     }
@@ -50,8 +52,8 @@ $html = '
 </head>
 <body>
     <h1 style="text-align:center">Lista de Clientes</h1>
-    <p style="text-align:center">Data: '.date('d/m/Y').'</p>
-    <p style="text-align:center">Total de Clientes: '.count($_SESSION["clientes"]).'</p>
+    <p style="text-align:center">Data: ' . date('d/m/Y') . '</p>
+    <p style="text-align:center">Total de Clientes: ' . count($response["data"]) . '</p>
     <table>
         <thead>
             <tr>
@@ -64,7 +66,7 @@ $html = '
             </tr>
         </thead>
         <tbody id="clientTableBody">
-            '.$lista.'
+            ' . $lista . '
         </tbody>
     </table>
 </body>
@@ -78,7 +80,7 @@ $mpdf = new \Mpdf\Mpdf();
 $mpdf->WriteHTML($html);
 
 // Define o nome do arquivo PDF para download
-$nomeArquivo = 'clientes_'.date('YmdHis').'.pdf';
+$nomeArquivo = 'clientes_' . date('YmdHis') . '.pdf';
 // Define as dimensões do PDF
 $mpdf->SetDisplayMode('fullpage');
 $mpdf->SetMargins(10, 10, 10);

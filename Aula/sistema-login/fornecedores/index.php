@@ -43,32 +43,36 @@ if (isset($_GET["key"])) {
         <div class="row">
 
             <div class="col">
-                <h2>
-                    Fornecedores Cadastrados
-                    <a href="/fornecedores/formulario.php" class="btn btn-primary btn-sm">Novo Fornecedor</a>
-                </h2>
-                <!-- Tabela de fornecedores cadastrados -->
-                <table class="table table-striped" id="myTable">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Razão Social</th>
-                            <th scope="col">CNPJ</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Telefone</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="fornecedorTableBody">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            Fornecedores Cadastrados
+                            <a href="/fornecedores/formulario.php" class="btn btn-primary btn-sm">Novo Fornecedor</a>
+                        </h2>
+                    </div>
+                    <div class="card-body overflow-auto">
+                        <!-- Tabela de fornecedores cadastrados -->
+                        <table class="table table-striped" id="myTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Razão Social</th>
+                                    <th scope="col">CNPJ</th>
+                                    <th scope="col">E-mail</th>
+                                    <th scope="col">Telefone</th>
+                                    <th scope="col">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fornecedorTableBody">
 
-                        <?php
+                                <?php
 
 
-                        require("../requests/fornecedores/get.php");
-                        if (!empty($response)) {
-                            foreach ($response["data"] as $key => $fornecedor) {
-                                echo '
+                                require("../requests/fornecedores/get.php");
+                                if (!empty($response)) {
+                                    foreach ($response["data"] as $key => $fornecedor) {
+                                        echo '
                                 <tr>
                                     <th scope="row">' . $fornecedor['id_fornecedor'] . '</th>
                                     <td>' . $fornecedor["nome"] . '</td>
@@ -82,17 +86,20 @@ if (isset($_GET["key"])) {
                                     </td>
                                 </tr>
                                 ';
-                            }
-                        } else {
-                            echo '
+                                    }
+                                } else {
+                                    echo '
                             <tr>
                                 <td colspan="7">Nenhum fornecedor cadastrado</td>
                             </tr>
                             ';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>

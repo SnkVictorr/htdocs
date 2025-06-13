@@ -44,37 +44,41 @@ if (isset($_GET["key"])) {
     <div class="container mt-5">
         <div class="row">
             <div class="col">
-                <h1>Produtos Cadastrados
-                    <a href="/produtos/formulario.php" class="btn btn-primary btn-sm">Novo Produto</a>
-                </h1>
-                <table class="table table-striped" id="produtos">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Imagem</th>
-                            <th scope="col">Produto</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Marca</th>
-                            <th scope="col">Quantidade</th>
-                            <th scope="col">Preco</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="produtoTableBody">
-                        <!-- Os clientes serão carregados aqui via PHP -->
-                        <?php
+                <div class="card">
+                    <div class="card-header">
+                        <h1>Produtos Cadastrados
+                            <a href="/produtos/formulario.php" class="btn btn-primary btn-sm">Novo Produto</a>
+                        </h1>
+                    </div>
+                    <div class="card-body overflow-auto">
+                        <table class="table table-striped " id="produtos">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 10%;">Imagem</th>
+                                    <th style="width: 15%;">Produto</th>
+                                    <th style="width: 20%;">Descrição</th>
+                                    <th style="width: 10%;">Marca</th>
+                                    <th style="width: 5%;">Qtd</th>
+                                    <th style="width: 10%;">Preço</th>
+                                    <th style="width: 20%;">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="produtoTableBody">
+                                <!-- Os clientes serão carregados aqui via PHP -->
+                                <?php
 
-                        // SE HOUVER CLIENTES NA BD, EXIBIR
-                        require("../requests/produtos/get.php");
-                        if (!empty($response)) {
-                            foreach ($response["data"] as $key => $produto) {
-                                echo '
+                                // SE HOUVER CLIENTES NA BD, EXIBIR
+                                require("../requests/produtos/get.php");
+                                if (!empty($response)) {
+                                    foreach ($response["data"] as $key => $produto) {
+                                        echo '
                                 <tr>
                                     <th scope="row">' . $produto['id_produto'] . '</th>
                                     <td><img width="60" src="../produtos/imagens/' . $produto["imagem"] . '"></td>
 
                                     <td>' . $produto["produto"] . '</td>
-                                    <td>' . $produto["descricao"] . '</td>
+                                    <td class="text-truncate" style="max-width: 150px;">' . $produto["descricao"] . '</td>
                                     <td>' . $produto["marca"] . '</td>
                                     <td>' . $produto["quantidade"] . '</td>
                                     <td>R$ ' . $produto["preco"] . '</td>
@@ -84,17 +88,20 @@ if (isset($_GET["key"])) {
                                     </td>
                                 </tr>
                                 ';
-                            }
-                        } else {
-                            echo '
+                                    }
+                                } else {
+                                    echo '
                             <tr>
                                 <td colspan="7">Nenhum produto cadastrado</td>
                             </tr>
                             ';
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
