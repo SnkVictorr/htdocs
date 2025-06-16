@@ -15,10 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html suppressHydrationWarning lang="pt-br">
       <body className={` antialiased`}>
         <Header></Header>
-        {children}
+        <main>{children}</main>
         <Footer></Footer>
       </body>
     </html>
