@@ -1,77 +1,84 @@
 <?php
 try {
 
-
+    // Verifica se há um ID na URL para consulta específica
     if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
         $id = $_GET["id"];
 
-
+        // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produto
-            JOIN marca ON produto.marca_id = marca.marca_id
-            JOIN categoria ON produto.categoria_id = categoria.categoria_id
-            WHERE produto_id = :id
+            FROM produtos
+            JOIN marcas ON produtos.id_marca = marcas.id_marca
+            JOIN categorias ON produto.id_categoria = categoria.categoria_id
+            WHERE id_produto = :id
         ";
 
+        // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
-
+        // Vincular o parâmetro :id com o valor da variável $id
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-    } elseif (isset($_GET["produto"]) && is_string($_GET["produto"])) {
+    }
+    // Verifica se há um produto na URL para consulta
+    elseif (isset($_GET["produto"]) && is_string($_GET["produto"])) {
         $produto = $_GET["produto"];
 
-
+        // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produto
-            JOIN marca ON produto.marca_id = marca.marca_id
-            JOIN categoria ON produto.categoria_id = categoria.categoria_id
+            FROM produtos
+            JOIN marcas ON produtos.id_marca = marcas.id_marca
+             JOIN categorias ON produto.id_categoria = categoria.categoria_id
             WHERE produto LIKE :produto
+            ORDER BY produto
         ";
 
         // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
-
+        // Vincular o parâmetro :produto com o valor da variável $produto
         $stmt->bindValue(':produto', '%' . $produto . '%', PDO::PARAM_STR);
-    } elseif (isset($_GET["marca_id"]) && is_string($_GET["marca_id"])) {
-        $marca_id = $_GET["marca_id"];
+    }
+    // Verifica se há um produto na URL para consulta
+    elseif (isset($_GET["id_marca"]) && is_string($_GET["id_marca"])) {
+        $id_marca = $_GET["id_marca"];
 
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produto
-            JOIN marca ON produto.marca_id = marca.marca_id
-            WHERE marca_id = :marca_id
+            FROM produtos
+            JOIN marcas ON produtos.id_marca = marcas.id_marca
+            WHERE id_marca = :id_marca
+
+        ";
+
+        // Preparar a sintaxe SQL
+        $stmt = $conn->prepare($sql);
+        // Vincular o parâmetro :produto com o valor da variável $produto
+        $stmt->bindValue(':id_marca', '%' . $id_marca . '%', PDO::PARAM_STR);
+    } elseif (isset($_GET["id_categoria"]) && is_string($_GET["id_categoria"])) {
+        $id_categoria = $_GET["id_categoria"];
+
+        // Monta a sintaxe SQL de busca
+        $sql = "
+            SELECT * 
+            FROM produtos
+            JOIN categorias ON produto.id_categoria = categoria.id_categoria
+            WHERE id_categoria = :id_categoria
 
         ";
 
         // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
 
-        $stmt->bindValue(':marca_id', '%' . $marca_id . '%', PDO::PARAM_STR);
-    } elseif (isset($_GET["categoria_id"]) && is_string($_GET["categoria_id"])) {
-        $categoria_id = $_GET["categoria_id"];
-
-        // Monta a sintaxe SQL de busca
-        $sql = "
-            SELECT * 
-            FROM produto
-            JOIN categoria ON produto.categoria_id = categoria.categoria_id
-            WHERE categoria_id = :categoria_id
-
-        ";
-
-        // Preparar a sintaxe SQL
-        $stmt = $conn->prepare($sql);
-
-        $stmt->bindValue(':categoria_id', '%' . $categoria_id . '%', PDO::PARAM_STR);
+        $stmt->bindValue(':id_categoria', '%' . $id_categoria . '%', PDO::PARAM_STR);
     } else {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT * 
-            FROM produto
-            JOIN marca ON produto.marca_id = marca.marca_id
-            JOIN categoria ON produto.categoria_id = categoria.categoria_id
+            FROM produtos
+            JOIN marcas ON produtos.id_marca = marcas.id_marca
+             JOIN categorias ON produto.id_categoria = categoria.categoria_id
+            ORDER BY produto
         ";
 
         // Preparar a sintaxe SQL

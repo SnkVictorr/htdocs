@@ -6,15 +6,15 @@ try {
 
     // Verificar se existe informações de formulário
     if (!empty($postfields)) {
-        $id = $postfields['produto_id'] ?? null;
-        $categoria_id = $postfields['categoria_id'] ?? null;
-        $marca_id = $postfields['marca_id'] ?? null;
+        $id = $postfields['id_produto'] ?? null;
+        $id_categoria = $postfields['id_categoria'] ?? null;
+        $id_marca = $postfields['id_marca'] ?? null;
         $produto = $postfields['produto'] ?? null;
         $descricao = $postfields['descricao'] ?? null;
         $preco = $postfields['preco'] ?? null;
         $desconto = $postfields['desconto'] ?? null;
         $estoque = $postfields['estoque'] ?? null;
-        $image_url = $postfields['image_url'] ?? null;
+        $imagem = $postfields['imagem'] ?? null;
 
 
 
@@ -23,36 +23,36 @@ try {
             http_response_code(400);
             throw new Exception('ID do cliente é obrigatório');
         }
-        if (empty($produto) || empty($postfields['marca_id'])) {
+        if (empty($produto) || empty($postfields['id_marca'])) {
             http_response_code(400);
             throw new Exception('Marca e produto são obrigatórios');
         }
 
         $sql = "
-        UPDATE produto SET 
-            categoria_id = :categoria_id,
-            marca_id = :marca_id,
+        UPDATE produtos SET 
+            id_categoria = :id_categoria,
+            id_marca = :id_marca,
             produto = :produto,
             descricao = :descricao,
             estoque = :estoque, 
             preco = :preco,
             desconto = :desconto,
-            image_url = :image_url
-        WHERE produto_id = :id
+            imagem = :imagem
+        WHERE id_produto = :id
         ";
 
 
 
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);
-        $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
+        $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
+        $stmt->bindParam(':id_marca', $id_marca, PDO::PARAM_INT);
         $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);
         $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
         $stmt->bindParam(':preco', $preco, PDO::PARAM_STR);
         $stmt->bindParam(':desconto', $desconto, PDO::PARAM_STR);
         $stmt->bindParam(':estoque', $estoque, PDO::PARAM_INT);
-        $stmt->bindParam(':image_url', $image_url, PDO::PARAM_STR);
+        $stmt->bindParam(':imagem', $imagem, PDO::PARAM_STR);
 
 
         $stmt->execute();

@@ -8,8 +8,8 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT *
-            FROM marca
-            WHERE marca_id = :id
+            FROM marcas
+            WHERE id_marca = :id
         ";
 
         // Preparar a sintaxe SQL
@@ -19,12 +19,12 @@ try {
     }
     // Verifica se há um Produto na URL para consulta
     elseif (isset($_GET["marca"]) && is_string($_GET["marca"])) {
-        $marca = $_GET["marca"];
+        $produto = $_GET["marca"];
 
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT *
-            FROM marca
+            FROM marcas
             WHERE marca LIKE :marca
             ORDER BY marca
         ";
@@ -37,7 +37,7 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT *
-            FROM marca
+            FROM marcas
             ORDER BY marca
         ";
 

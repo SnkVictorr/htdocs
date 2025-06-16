@@ -6,37 +6,37 @@ try {
 
     if (!empty($postfields)) {
 
-        $categoria_id = $postfields['categoria_id'] ?? null;
-        $marca_id = $postfields['marca_id'] ?? null;
+        $id_categoria = $postfields['id_categoria'] ?? null;
+        $id_marca = $postfields['id_marca'] ?? null;
         $produto = $postfields['produto'] ?? null;
         $descricao = $postfields['descricao'] ?? null;
         $preco = $postfields['preco'] ?? null;
         $desconto = $postfields['desconto'] ?? null;
         $estoque = $postfields['estoque'] ?? null;
-        $image_url = $postfields['image_url'] ?? null;
+        $imagem = $postfields['imagem'] ?? null;
 
         // Verifica campos obrigatórios
-        if (empty($produto) || empty($preco) || empty($categoria_id) || empty($marca_id) || empty($desconto) || empty($desconto) || empty($image_url) || empty($estoque)) {
+        if (empty($produto) || empty($preco) || empty($id_categoria) || empty($id_marca) || empty($desconto) || empty($desconto) || empty($imagem) || empty($estoque)) {
             http_response_code(400);
             throw new Exception('Todos os campos são obrigatórios');
         }
 
-        $sql = "INSERT INTO produto (categoria_id, marca_id, produto, descricao, estoque, preco, desconto,  image_url) VALUES
-        (:categoria_id, :marca_id, :produto, :descricao,:estoque, :preco,  :desconto,  :image_url)
+        $sql = "INSERT INTO produtos (id_categoria, id_marca, produto, descricao, estoque, preco, desconto,  imagem) VALUES
+        (:id_categoria, :id_marca, :produto, :descricao,:estoque, :preco,  :desconto,  :imagem)
        ";
 
 
 
         $stmt = $conn->prepare($sql);
 
-        $stmt->bindParam(':categoria_id', $categoria_id, PDO::PARAM_INT);
-        $stmt->bindParam(':marca_id', $marca_id, PDO::PARAM_INT);
+        $stmt->bindParam(':id_categoria', $id_categoria, PDO::PARAM_INT);
+        $stmt->bindParam(':id_marca', $id_marca, PDO::PARAM_INT);
         $stmt->bindParam(':produto', $produto, PDO::PARAM_STR);
         $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
         $stmt->bindParam(':preco', $preco, PDO::PARAM_STR);
         $stmt->bindParam(':desconto', $desconto, PDO::PARAM_STR);
         $stmt->bindParam(':estoque', $estoque, PDO::PARAM_INT);
-        $stmt->bindParam(':image_url', $image_url, PDO::PARAM_STR);
+        $stmt->bindParam(':imagem', $imagem, PDO::PARAM_STR);
 
         $stmt->execute();
 

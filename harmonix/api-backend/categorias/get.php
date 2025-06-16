@@ -8,8 +8,8 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT *
-            FROM categoria
-            WHERE categoria_id = :id
+            FROM categorias
+            WHERE id_categoria = :id
         ";
 
         // Preparar a sintaxe SQL
@@ -24,7 +24,7 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT *
-            FROM categoria
+            FROM categorias
             WHERE categoria LIKE :categoria
             ORDER BY categoria
         ";
@@ -37,7 +37,7 @@ try {
         // Monta a sintaxe SQL de busca
         $sql = "
             SELECT *
-            FROM categoria
+            FROM categorias
             ORDER BY categoria
         ";
 

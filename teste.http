@@ -1,0 +1,29 @@
+@baseurl = http://localhost:8080
+
+POST {{baseurl}}/clientes/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "cliente": "Manoel Gomes",
+  "imagem": "sadsd.jpg",
+  "data_nascimento": "1990-01-01",
+  "sexo": "Masculino",
+  "cpf": "12345678901",
+  "rg": "123456789",
+  "email": "sdsad@hotmail.com",
+  "senha": "123456",
+  "telefone": "11999999999",
+  "telefone_residencial": "11333333333",
+  "endereco": {
+    "logradouro": "Rua Exemplo",
+    "numero": "123",
+    "complemento": "Apto 1",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "01000-000"
+  }
+}
+
+###
+GET {{baseurl}}/clientes
