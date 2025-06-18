@@ -60,16 +60,19 @@ try {
 
         $stmt->execute();
 
+        // 201 - Created
+        http_response_code(201);
         $result = array(
             'status' => 'success',
-            'message' => 'Cliente cadastrado com sucesso!'
+            'message' => 'Fornecedor cadastrado com sucesso!'
         );
     } else {
-        http_response_code(400);
-        // Se não existir dados, retornar erro
-        throw new Exception('Nenhum dado foi enviado!');
+
+        throw new Exception('Nenhum dado foi enviado!', 400);
     }
 } catch (Exception $e) {
+    $code = !empty($e->getCode()) ? $e->getCode() : 500; // Define o código de status HTTP
+    http_response_code($code); // Define o código de status HTTP
     // Se houver erro, retorna o erro
     $result = array(
         'status' => 'error',
