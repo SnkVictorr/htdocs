@@ -4,7 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import "./styles.css"; // Import the styles for the carousel
 
-export function BannerHome() {
+export default function BannerHome() {
   const [emblaRef] = useEmblaCarousel({
     loop: true,
   });

@@ -1,7 +1,9 @@
 "use client";
 
-import { BannerHome } from "./components/home/banner";
-import { ProdutosHome } from "./components/home/produtos";
+import BannerHome from "./components/home/banner";
+import ClientesHome from "./components/home/clientes";
+import FornecedoresHome from "./components/home/fornecedores";
+import ProdutosHome from "./components/home/produtos";
 
 export default function Home() {
   return (
@@ -9,6 +11,8 @@ export default function Home() {
       <div>
         <BannerHome />
         <ProdutosHome />
+        <ClientesHome />
+        <FornecedoresHome />
       </div>
     </>
   );

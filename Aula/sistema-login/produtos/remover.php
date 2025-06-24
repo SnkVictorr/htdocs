@@ -3,8 +3,8 @@
 // CHAMA O ARQUIVO ABAIXO NESTA TELA
 include "../verificar-autenticacao.php";
 
-if (isset($_GET["key"])) {
-    $key = $_GET["key"];
+if (isset($_GET["key"]) && is_numeric($_GET["key"])) {
+    $key = (int) $_GET["key"];
     // // EXCLUIR IMAGEM DO PRODUTO
     // if (file_exists("imagens/" . $_SESSION["clientes"][$key]["clientImage"])) {
     //     unlink("imagens/" . $_SESSION["clientes"][$key]["clientImage"]);
@@ -15,8 +15,29 @@ if (isset($_GET["key"])) {
     // $_SESSION["clientes"] = array_values($_SESSION["clientes"]);
     // $_SESSION["msg"] = "Cliente removido com sucesso!";
 
+    require_once "../requests/produtos/get.php";
+
+    // echo '<pre>';
+    // print_r($response["data"][0]);
+    // echo '</pre>';
+    // exit;
+    if (!empty($response["data"][0]["imagem"])) {
+        $imagem = $response["data"][0]["imagem"];
+        $path = '../produtos/imagens/' . $imagem;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+    } else {
+        $_SESSION["msg"] = "Imagem do Cliente não encontrado.";
+        header("Location: ./");
+        exit;
+    }
     require "../requests/produtos/delete.php";
     $_SESSION["msg"] = $response["message"];
+} else {
+    $_SESSION["msg"] = "Parâmetro inválido.";
+    header("Location: ./");
+    exit;
 }
 header("Location: ./");
 exit;

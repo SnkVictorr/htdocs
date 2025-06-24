@@ -1,51 +1,52 @@
-export async function ProdutosHome() {
+export default async function ProdutosHome() {
   interface Produto {
     id_produto: number;
     produto: string;
     descricao: string;
-    preco: number;
     imagem: string;
+    preco: number;
   }
 
-  //   Requisição para obter os produtos da api
-  const produtos = await fetch("http://localhost:8080/produtos", {
-    method: "GET",
+  //requisição para obter os produtos através da API
+  let produtos: { data: Produto[] } = { data: [] };
 
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => {
-      // console.log(res);
-      if (!res.ok) {
-        throw new Error("Erro ao buscar produtos");
-      }
-    })
-    .finally(() => {
-      return false;
+  try {
+    const request = await fetch("http://localhost:8080/produtos", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
     });
+    produtos = await request.json();
+  } catch (error) {
+    console.error("Falha ao buscar produtos:", error);
+  }
 
   return (
-    <section className="w-full bg-gray-200 flex flex-col items-center justify-center gap-4 py-10">
+    <section className="w-full bg-gray-200  flex flex-col items-center justify-center py-10">
       <h2 className="text-5xl font-bold text-gray-800 mb-6">Produtos</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {produtos.map((produto, index) => (
-          <div
-            key={index}
-            className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
-          >
-            <img
-              src={produto.imagem}
-              alt="Produto 1"
-              className="w-full h-48 object-cover rounded mb-4"
-            />
-            <h3 className="text-xl font-semibold mb-2">{produto.produto}</h3>
-            <p className="text-gray-600 mb-4">{produto.descricao}</p>
-            <span className="text-lg font-bold text-green-600">
-              {produto.preco}
-            </span>
-          </div>
-        ))}
+        {/*Exemplo de produto */}
+        {Array.isArray(produtos.data) &&
+          produtos.data.map((produto: Produto, index: number) => (
+            <div
+              key={index}
+              className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+            >
+              <img
+                src={`http://localhost:8000/produtos/imagens/${produto.imagem}`}
+                alt={produto.produto}
+                className="w-full h-48 object-cover mb-4 rounded-t-lg"
+              />
+              <h3 className="text-xl font-semibold text-gray-800">
+                {produto.produto}
+              </h3>
+              <p className="text-gray-600 mb-2 truncate">{produto.descricao}</p>
+              <span className="text-lg font-bold text-green-600 mt-2">
+                R${produto.preco}
+              </span>
+            </div>
+          ))}
       </div>
     </section>
   );

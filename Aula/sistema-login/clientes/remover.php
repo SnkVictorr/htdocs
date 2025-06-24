@@ -15,7 +15,7 @@ if (isset($_GET["key"]) && is_numeric($_GET["key"])) {
     // $_SESSION["clientes"] = array_values($_SESSION["clientes"]);
     // $_SESSION["msg"] = "Cliente removido com sucesso!";
 
-    require "../requests/clientes/get.php";
+    require_once "../requests/clientes/get.php";
 
     // echo '<pre>';
     // print_r($response["data"][0]);
@@ -27,9 +27,17 @@ if (isset($_GET["key"]) && is_numeric($_GET["key"])) {
         if (file_exists($path)) {
             unlink($path);
         }
+    } else {
+        $_SESSION["msg"] = "Imagem do Cliente não encontrado.";
+        header("Location: ./");
+        exit;
     }
     require "../requests/clientes/delete.php";
     $_SESSION["msg"] = $response["message"];
+} else {
+    $_SESSION["msg"] = "Parâmetro inválido.";
+    header("Location: ./");
+    exit;
 }
 header("Location: ./");
 exit;
