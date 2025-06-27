@@ -10,7 +10,7 @@ try {
             SELECT * 
             FROM produtos
             JOIN marcas ON produtos.id_marca = marcas.id_marca
-            JOIN categorias ON produto.id_categoria = categoria.categoria_id
+            JOIN categorias ON produtos.id_categoria = categorias.id_categoria
             WHERE id_produto = :id
         ";
 
@@ -28,7 +28,7 @@ try {
             SELECT * 
             FROM produtos
             JOIN marcas ON produtos.id_marca = marcas.id_marca
-             JOIN categorias ON produto.id_categoria = categoria.categoria_id
+             JOIN categorias ON produtos.id_categoria = categorias.id_categoria
             WHERE produto LIKE :produto
             ORDER BY produto
         ";
@@ -62,7 +62,7 @@ try {
         $sql = "
             SELECT * 
             FROM produtos
-            JOIN categorias ON produto.id_categoria = categoria.id_categoria
+            JOIN categorias ON produtos.id_categoria = categorias.id_categoria
             WHERE id_categoria = :id_categoria
 
         ";
@@ -77,7 +77,7 @@ try {
             SELECT * 
             FROM produtos
             JOIN marcas ON produtos.id_marca = marcas.id_marca
-             JOIN categorias ON produto.id_categoria = categoria.categoria_id
+             JOIN categorias ON produtos.id_categoria = categorias.id_categoria
             ORDER BY produto
         ";
 
