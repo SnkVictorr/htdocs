@@ -2,8 +2,10 @@
 // Database connection settings
 define('DB_HOST', 'localhost'); // Database host
 define('DB_USER', 'root'); // Database user
-define('DB_PASS', 'senha123'); // Database password
-define('DB_NAME', 'db-backend'); // Database name
+define('DB_PASS', 'root'); // Database password
+define('DB_NAME', 'db_backend'); // Database name
+
+
 
 try {
     // Create connection
