@@ -12,6 +12,14 @@ header('Content-Type: application/json; charset=utf-8'); // Define o tipo de con
 // Define uma constante com o método HTTP da requisição
 define('method', $_SERVER['REQUEST_METHOD']);
 
+
+// Responde imediatamente a requisições OPTIONS (pré-flight)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+
 // Recupera informações do cabeçalho da requisição
 $server = apache_request_headers();
 

@@ -8,46 +8,36 @@ try {
     if (!empty($postfields)) {
         // Extrair os campos do formulário
         $id_cliente = $postfields['id_cliente'] ?? null;
-        $id_produto = $postfields['id_produto'] ?? null;
-        $qtde = $postfields['qtde'] ?? null;
-        $preco = $postfields['preco'] ?? null;
+        $status = $postfields['status'] ?? null;
 
         // Verifica campos obrigatórios
-        if (empty($id_cliente) || empty($id_produto) || empty($qtde) || empty($preco)) {
+        if (empty($id_cliente) || empty($status)) {
             http_response_code(400);
             throw new Exception('Todos os campos são obrigatórios');
         }
 
 
 
-        // $check = $conn->prepare("SELECT id_cart FROM cart WHERE id_cliente = ? AND id_produto = ?");
-        // $check->execute([$id_cliente, $id_produto]);
-        // $data = $check->fetch(PDO::FETCH_ASSOC);
 
-        // if ($data) {
-        //     $stmt = $conn->prepare("UPDATE cart SET qtde = qtde + ?, preco = preco + ? WHERE id_cliente = ? AND id_produto = ?");
-        //     $stmt->execute([$qtde, $preco, $id_cliente, $id_produto]);
-        // } else {
-        $stmt = $conn->prepare("INSERT INTO cart (id_cliente, id_produto, qtde, preco) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$id_cliente, $id_produto, $qtde, $preco]);
-        // }
+        $insert = $conn->prepare("INSERT INTO pedidos (id_cliente, status) VALUES (?, ?, ?)");
+        $insert->execute([$id_cliente, $data, $status]);
+
         $result = array(
             'status' => 'success'
         );
 
-
-
         // Verifica se a inserção foi bem-sucedida
         if ($stmt->rowCount() == 0) {
             http_response_code(400);
-            throw new Exception('Erro ao adicionar produto ao cart');
+            $result = "erro";
+            throw new Exception('Erro ao adicionar produto ao pedidos');
         }
 
         // 201 - Created
         http_response_code(201);
         $result = array(
             'status' => 'success',
-            'message' => 'Produto adicionado ao cart com sucesso!'
+            'message' => 'Produto adicionado ao pedidos com sucesso!'
         );
     } else {
         throw new Exception('Nenhum dado foi enviado!', 400);

@@ -6,38 +6,28 @@ try {
 
         // Monta a sintaxe SQL de busca
         $sql = "
-            SELECT c.id_cliente,
+            SELECT pd.id_cliente,
             GROUP_CONCAT(
                 JSON_OBJECT(
-                    'id_produto', c.id_produto,
-                    'produto' , p.produto,
-                    'marca', m.marca,
-                    'qtde', c.qtde,
-                    'preco', c.preco,
-                    'preco_original', p.preco
+                    'id_produto', p.id_produto,
+                    'produto', p.produto,
+                    'qtde', pd.qtde,
+                    'preco', pd.preco
                 )
             ) AS produtos,
-             SUM(c.qtde) AS qtde_total,
+            SUM(pd.qtde) AS qtde_total,
              SUM(p.preco) AS preco_total
-            FROM cart AS c
-            JOIN produtos AS p ON c.id_produto = p.id_produto
-            JOIN marcas AS m ON p.id_marca = m.id_marca
-            WHERE c.id_cliente = :id_cliente
+             FROM pedidos AS pd
+             JOIN produtos AS p ON pd.id_produto = p.id_produto
+             WHERE pd.id_cliente = :id_cliente
         ";
 
         // Preparar a sintaxe SQL
         $stmt = $conn->prepare($sql);
         // Vincular o parâmetro :id_cliente com o valor da variável $id_cliente
         $stmt->bindParam(':id_cliente', $id_cliente, PDO::PARAM_INT);
-    } else {
-        http_response_code(400);
-        $result = array(
-            'status' => 'error',
-            'message' => 'ID do cliente inválido ou não fornecido'
-        );
-        echo json_encode($result);
-        exit;
     }
+
 
     // Executar a sintaxe SQL
     $stmt->execute();
@@ -49,17 +39,6 @@ try {
         http_response_code(204);
         exit;
     } else {
-
-        foreach ($data as $item) {
-            // Process each item if needed
-            $item->produtos = json_decode("[" . $item->produtos . "]");
-        }
-
-        // foreach ($data as $key => $item) {
-        //     // Process each item if needed
-        //     $data[$key]->produtos = json_decode("[" . $item->produtos . "]");
-        // }
-
 
         $result = array(
             'status' => 'success',

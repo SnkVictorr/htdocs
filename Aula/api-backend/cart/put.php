@@ -6,35 +6,42 @@ try {
     if (!empty($postfields)) {
 
         // Extrair os campos do formulário
-        $id_cliente = $postfields['id_cliente'] ?? null;
-        $id_produto = $postfields['id_produto'] ?? null;
-        $qtde = $postfields['qtde'] ?? null;
-        $preco = $postfields['preco'] ?? null;
+        $id_cart = $postfields['id_cart'] ?? null;
+        $qtde = $postfields['qtde'] ?? 0;
+
+
+
+
 
         // Verifica campos obrigatórios
-        if (empty($id_cliente) || empty($id_produto) || empty($qtde) || empty($preco)) {
+        if (empty($id_cart)) {
             http_response_code(400);
             throw new Exception('Todos os campos são obrigatórios');
         }
 
+        if ($qtde == 0) {
+            $sql = "DELETE FROM cart WHERE id_cart = :id_cart";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_cart', $id_cart, PDO::PARAM_INT);;
+        } else {
 
-        // Monta a sintaxe SQL de inserção
-        $sql = "
+            // Monta a sintaxe SQL de inserção
+            $sql = "
             UPDATE cart SET 
-                qtde = :qtde,
-                preco = :preco
-            WHERE id_cliente = :id_cliente AND id_produto = :id_produto
+                qtde = :qtde
+            WHERE id_cart = :id_cart
             ";
 
-        // Preparar a sintaxe SQL
-        $stmt = $conn->prepare($sql);
+            // Preparar a sintaxe SQL
+            $stmt = $conn->prepare($sql);
 
 
-        // Vincular os parâmetros
-        $stmt->bindParam(':id_cliente', $id_cliente, PDO::PARAM_INT);
-        $stmt->bindParam(':id_produto', $id_produto, PDO::PARAM_INT);
-        $stmt->bindParam(':qtde', $qtde, PDO::PARAM_INT);
-        $stmt->bindParam(':preco', $preco, PDO::PARAM_STR);
+            // Vincular os parâmetros
+            $stmt->bindParam(':id_cart', $id_cart, PDO::PARAM_INT);
+            $stmt->bindParam(':qtde', $qtde, PDO::PARAM_INT);
+        }
+
+
         // Executar a sintaxe SQL
         $stmt->execute();
     } else {
@@ -42,7 +49,7 @@ try {
     }
     $result = array(
         'status' => 'success',
-        'message' => 'Produto atualizado no carrinho com sucesso!'
+        'message' => 'Item alterado com sucesso!'
     );
 } catch (Exception $e) {
     $code = !empty($e->getCode()) ? $e->getCode() : 400; // Define o código de status HTTP
