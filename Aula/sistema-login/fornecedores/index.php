@@ -70,7 +70,7 @@ if (isset($_GET["key"])) {
 
 
                                 require("../requests/fornecedores/get.php");
-                                if (!empty($response)) {
+                                if (!empty($response["data"])) {
                                     foreach ($response["data"] as $key => $fornecedor) {
                                         echo '
                                 <tr>
@@ -87,13 +87,14 @@ if (isset($_GET["key"])) {
                                 </tr>
                                 ';
                                     }
-                                } else {
-                                    echo '
-                            <tr>
-                                <td colspan="7">Nenhum fornecedor cadastrado</td>
-                            </tr>
-                            ';
                                 }
+                                //     } else {
+                                //         echo '
+                                // <tr>
+                                //     <td colspan="7">Nenhum fornecedor cadastrado</td>
+                                // </tr>
+                                // ';
+                                //     }
                                 ?>
                             </tbody>
                         </table>
